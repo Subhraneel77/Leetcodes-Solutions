@@ -11,21 +11,21 @@
 <p>Return <em>the <strong>length</strong> of the <strong>longest possible word chain</strong> with words chosen from the given list of </em><code>words</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre><strong>Input:</strong> words = ["a","b","ba","bca","bda","bdca"]
 <strong>Output:</strong> 4
 <strong>Explanation</strong>: One of the longest word chains is ["a","<u>b</u>a","b<u>d</u>a","bd<u>c</u>a"].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre><strong>Input:</strong> words = ["xbc","pcxbcf","xb","cxbc","pcxbc"]
 <strong>Output:</strong> 5
 <strong>Explanation:</strong> All the words can be put in a word chain ["xb", "xb<u>c</u>", "<u>c</u>xbc", "<u>p</u>cxbc", "pcxbc<u>f</u>"].
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre><strong>Input:</strong> words = ["abcd","dbqca"]
 <strong>Output:</strong> 1
