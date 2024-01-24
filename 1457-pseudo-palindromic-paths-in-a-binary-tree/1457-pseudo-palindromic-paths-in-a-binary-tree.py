@@ -1,13 +1,6 @@
 class Solution:
     def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
-        # traverse the tree, the set pairs maintains the number of each element
-        # If you already have the same element in pairs, then remove it
-        # Else, add it to pairs
 
-        # In the leaf, if the set is empty, then its an even palindrome.
-        # In the leaf, if the set has 1 element , its an odd palindrome.
-        # In th leaf, if the set has > 1 elements, its not a palindrome.
-        
         def traverse(node, pairs):
             if not node:
                 return 0
