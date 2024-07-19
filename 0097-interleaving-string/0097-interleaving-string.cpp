@@ -1,24 +1,30 @@
 class Solution {
 public:
-    bool rec(string s1,string s2,string s3,int i,int j,int k,vector<vector<int>>&dp){
-        if(k==s3.size()&&i==s1.size()&&j==s2.size())return true;
-        if(i>s1.size()||j>s2.size())return false;
-        if(dp[i][j]!=-1)return dp[i][j];
-        if(s3[k]==s2[j]&&s3[k]==s1[i]){
-            return dp[i][j]= rec(s1,s2,s3,i+1,j,k+1,dp)||rec(s1,s2,s3,i,j+1,k+1,dp);
+    int dp[105][105];
+    bool fdp(int i,int j,string &s1,string &s2, string &s3){
+        int k=i+j;
+        if(i==s1.size() && j==s2.size()) return true;
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(i==s1.size()){
+            if(s2[j]!=s3[k]) return false;
+            else return dp[i][j]=fdp(i,j+1,s1,s2,s3);
         }
-        else if(s1[i]==s3[k]){
-            return dp[i][j]= rec(s1,s2,s3,i+1,j,k+1,dp);
+        if(j==s2.size()){
+            if(s1[i]!=s3[k]) return false;
+            else return dp[i][j]=fdp(i+1,j,s1,s2,s3);
         }
-        else if(s3[k]==s2[j]){
-            return dp[i][j]= rec(s1,s2,s3,i,j+1,k+1,dp);
+        if(s1[i]==s2[j]){
+            if(s3[k]!=s1[i]) return false;
+            else return dp[i][j]=fdp(i+1,j,s1,s2,s3)+fdp(i,j+1,s1,s2,s3);
         }
-        else{
-            return dp[i][j]= false;
-        }
+        else if(s1[i]==s3[k]) return dp[i][j]=fdp(i+1,j,s1,s2,s3);
+        else if(s2[j]==s3[k]) return dp[i][j]=fdp(i,j+1,s1,s2,s3);
+        return false;
     }
     bool isInterleave(string s1, string s2, string s3) {
-        vector<vector<int>>dp(s1.size()+1,(vector<int>(s2.size()+1,-1)));
-        return rec(s1,s2,s3,0,0,0,dp);
+        memset(dp,-1,sizeof(dp));
+        if(s1.size()+s2.size()!=s3.size()) return false;
+        return fdp(0,0,s1,s2,s3);
+        
     }
 };
