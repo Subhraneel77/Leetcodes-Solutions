@@ -1,35 +1,29 @@
 class Solution {
 public:
-    static vector<int> luckyNumbers (vector<vector<int>>& matrix) {
-        const int m=matrix.size(), n=matrix[0].size();
-        vector<int> minPos(m, -1);
-        for(int i=0; i<m; i++){
-            int p=min_element(matrix[i].begin(), matrix[i].end())-matrix[i].begin();
-            minPos[i]=p;
+    vector<int> luckyNumbers (vector<vector<int>>& matrix) {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        
+        vector<int> row_minimums(rows, INT_MAX);
+        vector<int> col_maximums(cols, 0);
+        
+        for (int row_ind = 0; row_ind < rows; ++row_ind) {
+            for (int col_ind = 0; col_ind < cols; ++col_ind) {
+                int el = matrix[row_ind][col_ind];
+                row_minimums[row_ind] = min(row_minimums[row_ind], el);
+                col_maximums[col_ind] = max(col_maximums[col_ind], el);
+            }
         }
-        vector<int> ans;
-        for(int i=0; i<m; i++){
-            int p=minPos[i], x=matrix[i][p];
-            bool lucky=1;
-            for(int j=0; j<m; j++){
-                if (matrix[j][p]>x){
-                    lucky=0;
-                    break;
+        
+        for (int row_ind = 0; row_ind < rows; ++row_ind) {
+            for (int col_ind = 0; col_ind < cols; ++col_ind) {
+                int el = matrix[row_ind][col_ind];
+                if (el == row_minimums[row_ind] && el == col_maximums[col_ind]) {
+                    return {el};
                 }
             }
-            if (lucky) ans.push_back(x);
         }
-        return ans;
+        
+        return {};
     }
 };
-
-
-
-
-
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();
