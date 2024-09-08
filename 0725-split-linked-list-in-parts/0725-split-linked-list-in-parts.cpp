@@ -1,43 +1,53 @@
 class Solution {
 public:
     vector<ListNode*> splitListToParts(ListNode* head, int k) {
-        int length = 0;
-        ListNode* current = head;
-        vector<ListNode*> parts;
+        vector<ListNode*> ans(k);
 
-        while (current) {
-            length++;
+        // get total size of linked list
+        int size = 0;
+        ListNode* current = head;
+        while (current != nullptr) {
+            size++;
             current = current->next;
         }
 
-        int base_size = length / k, extra = length % k;
+        // minimum size for the k parts
+        int splitSize = size / k;
+
+        // Remaining nodes after splitting the k parts evenly.
+        // These will be distributed to the first (size % k) nodes
+        int numRemainingParts = size % k;
+
         current = head;
+        ListNode* prev = current;
+        for (int i = 0; i < k; i++) {
+            // create the i-th part
+            ListNode* newPart = current;
+            // calculate size of i-th part
+            int currentSize = splitSize;
+            if (numRemainingParts > 0) {
+                numRemainingParts--;
+                currentSize++;
+            }
 
-        for (int i = 0; i < k; ++i) {
-            int part_size = base_size + (extra > 0);
-            ListNode* part_head = nullptr, * part_tail = nullptr;
-
-            for (int j = 0; j < part_size; ++j) {
-                if (!part_head) {
-                    part_head = part_tail = current;
-                } else {
-                    part_tail->next = current;
-                    part_tail = part_tail->next;
-                }
-
-                if (current) {
+            // traverse to end of new part
+            int j = 0;
+            while (j < currentSize) {
+                prev = current;
+                if (current != nullptr) {
                     current = current->next;
                 }
+                j++;
             }
 
-            if (part_tail) {
-                part_tail->next = nullptr;
+            // cut off the rest of linked list
+            if (prev != nullptr) {
+                prev->next = nullptr;
             }
 
-            parts.push_back(part_head);
-            extra = max(extra - 1, 0);
+            ans[i] = newPart;
         }
 
-        return parts;
+        return ans;
     }
 };
