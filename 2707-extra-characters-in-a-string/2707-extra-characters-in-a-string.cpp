@@ -1,23 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
 class Solution {
 public:
-    map<string,int>m;
-    int c(int i,string &s,vector<int>&dp){
-        if(i>=s.size())return 0;
-        int ans=INT_MAX;
-        if(dp[i]!=-1)return dp[i];
-        ans = 1 + c(i+1,s,dp);
-        string k="";
-        for(int j=i;j<s.size();j++){
-            k+= s[j];
-            if(m[k]){
-                ans=min(ans,c(j+1,s,dp));
+    int minExtraChar(string s, vector<string>& dictionary) {
+        unordered_set<string> dict(dictionary.begin(), dictionary.end()); // Set for O(1) lookup
+        int n = s.size();
+        vector<int> dp(n + 1, n); // DP array initialized with maximum extra characters
+        
+        dp[0] = 0; // No extra characters for an empty string
+        
+        // Iterate through each index in the string
+        for (int i = 1; i <= n; i++) {
+            // Try all possible substrings ending at i
+            for (int j = 0; j < i; j++) {
+                string sub = s.substr(j, i - j); // Get the substring s[j:i]
+                if (dict.find(sub) != dict.end()) {
+                    dp[i] = min(dp[i], dp[j]); // If substring is found in dictionary
+                }
             }
+            dp[i] = min(dp[i], dp[i - 1] + 1); // Consider the current character as extra
         }
-        return dp[i]=ans;
-    }
-    int minExtraChar(string s, vector<string>& d) {
-        for(auto i : d)m[i]++;
-        vector<int>dp(s.size(),-1);
-        return c(0,s,dp);
+        
+        return dp[n]; // Result stored in dp[n]
     }
 };
