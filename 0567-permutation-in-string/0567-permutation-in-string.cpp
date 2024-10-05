@@ -1,17 +1,32 @@
 class Solution {
 public:
-	bool checkInclusion(string s1, string s2) {
-		vector<int> map_s1(26), map_s2(26);
-		for(char& i1 : s1) 
-			map_s1[i1 - 'a']++;
-		for(int i = 0; i < s2.size(); i++) {
-			map_s2[s2[i] - 'a']++;
-			if(i >= s1.size() - 1) {
-				if(map_s2 == map_s1)  // Time: O(26)
-					return true;
-				map_s2[s2[i - s1.size() + 1] - 'a']--;
-			}
-		}
-		return false;
-	}
+    static inline array<int, 26> count(string& s, int l, int r){
+        array<int, 26> freq={0};
+        for(int i=l; i<=r; i++)
+            freq[s[i]-'a']++;
+        return freq;
+    }
+
+    static bool checkInclusion(string& s1, string& s2) {
+        const int n1=s1.size(), n2=s2.size();
+        if (n2<n1) return 0;
+        auto freq1=count(s1, 0, n1-1);
+        auto freq2=count(s2, 0, n1-1);
+        if (freq1==freq2) return 1;
+        for(int l=1, r=n1; r<n2; r++, l++){
+            freq2[s2[l-1]-'a']--;
+            freq2[s2[r]-'a']++;
+            if (freq2== freq1) return 1;
+        }
+        return 0;
+    }
 };
+
+
+
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
