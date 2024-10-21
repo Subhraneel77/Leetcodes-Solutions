@@ -1,39 +1,24 @@
 class Solution {
 public:
-    unordered_set<string>st;
-    int ans=INT_MIN;
-    int maxUniqueSplit(string s) 
-    {
-       int count=0;
-       fun(s,count);
-       return ans;
+    int maxUniqueSplit(string s) {
+        unordered_set<string> seen;
+        return dfs(0, s, seen);
     }
-    void fun(string s,int count)
-    {
-        //cout<<s<<endl;
-        if(s.length()==0)
-        {
-            ans=max(ans,count);
-            return;
-        }
-        string first="";
-        string second="";
 
-        for(int i=0;i<s.length();i++)
-        {
-            first.push_back(s[i]);
+private:
+    int dfs(int start, const string& s, unordered_set<string>& seen) {
+        if (start == s.size()) return 0;
 
-            if(st.find(first)==st.end())   //first entry of this type of string
-            {
-                st.insert(first);
-                second = s.substr(i+1,s.length());
-                fun(second,count+1);
-                st.erase(first);         //backtraing
-            }	
-            else
-            {
-                continue;
+        int maxSplits = 0;
+        for (int i = start + 1; i <= s.size(); ++i) {
+            string substring = s.substr(start, i - start);
+
+            if (seen.find(substring) == seen.end()) {
+                seen.insert(substring);
+                maxSplits = max(maxSplits, 1 + dfs(i, s, seen));
+                seen.erase(substring);  // Backtrack
             }
         }
+        return maxSplits;
     }
 };
